@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
+/* Apply Rockybilly font to the navbar title */
+.logo-text {
+  font-family: 'Acme', sans-serif !important;
+  letter-spacing: 2px;
+  font-size: 2.1rem !important;
+}
+@font-face {
+  font-family: 'Rockybilly';
+  src: url('/fonts/rockybilly.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.navbar-categories {
+  position: relative;
+}
+
+.navbar-category-link {
+  position: relative;
+  cursor: pointer;
+}
+
+.navbar-category-link {
+  font-family: 'Acme', sans-serif !important;
+  letter-spacing: 2px;
+  font-size: 1.35rem !important;
+}
+
+.navbar-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-radius: 8px;
+  min-width: 180px;
+  z-index: 100;
+  padding: 0.5rem 0;
+}
+
+.navbar-categories li:hover > .navbar-dropdown {
+  display: block;
+}
+
+.navbar-dropdown-link {
+  display: block;
+  padding: 0.5rem 1.2rem;
+  color: #4b0082;
+  text-decoration: none;
+  font-size: 1.08rem;
+  font-family: 'Rouge Script', cursive, sans-serif;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+.navbar-dropdown-link {
+  font-family: 'Acme', sans-serif !important;
+  font-size: 1.15rem !important;
+}
+
+.navbar-dropdown-link:hover {
+  background: #f5f5fa;
+  color: #007bff;
+}

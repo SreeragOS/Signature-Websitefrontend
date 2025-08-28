@@ -1,0 +1,102 @@
+.header-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  justify-content: center;
+  pointer-events: auto;
+}
+.header-category-link {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.18);
+  text-decoration: none;
+  padding: 0.2rem 0.7rem;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+.header-category-link:hover {
+  background: rgba(255,255,255,0.18);
+  color: #222;
+}
+.header-search-bar {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  pointer-events: auto;
+}
+.header-search-input {
+  padding: 0.5rem 1rem;
+  border-radius: 6px 0 0 6px;
+  border: none;
+  font-size: 1rem;
+  outline: none;
+  min-width: 180px;
+  max-width: 260px;
+}
+.header-search-btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 0 6px 6px 0;
+  border: none;
+  background: #fff;
+  color: #333;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.header-search-btn:hover {
+  background: #f1f1f1;
+}
+/* Only one .hero-header block, with max-width: 1280px */
+.hero-header {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0;
+  padding-top: 0;
+}
+.hero-image {
+  width: 100%;
+  height: 320px;
+  /* filter: brightness(0.6); */
+  border-radius: 12px 12px 0 0;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+.hero-header {
+  min-height: 320px;
+}
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  z-index: 2;
+.hero-overlay {
+  pointer-events: none;
+}
+.hero-title {
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.5);
+  font-family: 'Rouge Script', cursive, sans-serif;
+  letter-spacing: 2px;
+  background: rgba(0,0,0,0.18);
+  padding: 0.5rem 2rem;
+  border-radius: 8px;
+}
+}
