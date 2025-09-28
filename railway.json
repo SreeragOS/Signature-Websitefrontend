@@ -1,0 +1,10 @@
+{
+  "build": {
+    "command": "npm run build"
+  },
+  "deploy": {
+    "static": {
+      "directory": "dist"
+    }
+  }
+}
