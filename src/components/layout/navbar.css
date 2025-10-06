@@ -140,6 +140,10 @@
 }
 
 .navbar-dropdown-link:hover {
-  background: #f5f5fa;
+  background: #f7faf5;
   color: #007bff;
+}
+
+.navbar-martha {
+  background: #f7faf5; /* Change this to any color you like */
 }
