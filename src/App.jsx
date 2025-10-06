@@ -14,32 +14,34 @@ function App() {
   const location = useLocation();
   const hideNavAndHeader = ['/login', '/signup', '/create'].includes(location.pathname);
   return (
-    <div className="app-bg-martha flex flex-col px-0">
-      {!hideNavAndHeader && <Navbar />}
-      {!hideNavAndHeader && <Header />}
-      <div style={{width: '100%', maxWidth: '1280px', margin: '0 auto', boxSizing: 'border-box', overflowX: 'hidden'}}>
-        <Routes>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<PostList />} />
-          <Route path="/posts/:category/:subcategory" element={<PostList />} />
-          <Route
-            path="/create"
-            element={
-              <AdminRoute>
-                <PostCreate />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/edit/:id"
-            element={
-              <AdminRoute>
-                <PostEdit />
-              </AdminRoute>
-            }
-          />
-        </Routes>
+    <div className="responsive-scale-wrapper">
+      <div className="app-bg-martha flex flex-col px-0">
+        {!hideNavAndHeader && <Navbar />}
+        {!hideNavAndHeader && <Header />}
+        <div style={{width: '100%', maxWidth: '1280px', margin: '0 auto', boxSizing: 'border-box', overflowX: 'hidden'}}>
+          <Routes>
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<PostList />} />
+            <Route path="/posts/:category/:subcategory" element={<PostList />} />
+            <Route
+              path="/create"
+              element={
+                <AdminRoute>
+                  <PostCreate />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/edit/:id"
+              element={
+                <AdminRoute>
+                  <PostEdit />
+                </AdminRoute>
+              }
+            />
+          </Routes>
+        </div>
       </div>
     </div>
   );

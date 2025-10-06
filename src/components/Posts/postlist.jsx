@@ -93,9 +93,79 @@ function PostList() {
     );
   }
 
+  // Helper for profile/about section
+  const ProfileSection = (
+    <div className="profile-section">
+      <img src="/pic.jpg" alt="Profile" className="profile-photo" />
+      <div className="profile-desc">
+        <h4>Dr S Jayasree</h4>
+        <p>I'm Dr S Jayasree, a veterinary surgeon and artist who finds beauty in both healing and creation. Whether I’m in the operating room or the studio, I bring precision, compassion, and artistry to everything I do.</p>
+      </div>
+      <div className="contact-section" style={{ marginTop: '1.5rem', padding: '1rem 0', borderTop: '1px solid #eee', textAlign: 'center' }}>
+        <h5 style={{ marginBottom: '0.5rem', fontWeight: 600 }}>Contact Me</h5>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '1.2rem', marginBottom: '0.7rem' }}>
+          <a href="https://www.facebook.com/jayasree.siji" target="_blank" rel="noopener noreferrer">
+            <img src="/fb.png" alt="Facebook" style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }} />
+          </a>
+          <a href="https://linkedin.com/in/dr-s-jayasree" target="_blank" rel="noopener noreferrer">
+            <img src="/linkedin.png" alt="LinkedIn" style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }} />
+          </a>
+          <a href="https://instagram.com/dr_s_jayasree" target="_blank" rel="noopener noreferrer">
+            <img src="/ig.png" alt="Instagram" style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }} />
+          </a>
+          <a href="https://youtube.com/@DrSJayasreeVeterinarian" target="_blank" rel="noopener noreferrer">
+            <img src="/yt.png" alt="YouTube" style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }} />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Use window.matchMedia to detect mobile
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth <= 700);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
   return (
     <div className="container posts-main-flex">
-  <main className="posts-center-col">
+      {isMobile && (
+        <div style={{ width: '100%' }}>
+          {ProfileSection}
+          {isAdmin && (
+            <button
+              className="posts-search-btn mb-4"
+              style={{ background: 'linear-gradient(90deg, #14724b 0%, #0f4e34 100%)', fontSize: '1.08rem', fontWeight: 700 }}
+              onClick={() => navigate('/create')}
+            >
+              + Create Post
+            </button>
+          )}
+          <form
+            className="posts-search-bar"
+            onSubmit={e => {
+              e.preventDefault();
+              setSearchQuery(search);
+            }}
+            autoComplete="off"
+          >
+            <input
+              type="text"
+              name="search"
+              className="posts-search-input"
+              placeholder="Search..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+            <button type="submit" className="posts-search-btn">Search</button>
+          </form>
+        </div>
+      )}
+      <main className="posts-center-col">
+        {/* Only show profile section above posts on mobile */}
+        {/* ...existing code... */}
         {error && <p className="error">{error}</p>}
         {filteredPosts.length === 0 ? (
           <p>No posts found</p>
@@ -296,59 +366,39 @@ function PostList() {
           </ul>
         )}
       </main>
-      <aside className="posts-search-sidebar">
-        {isAdmin && (
-          <button
-            className="posts-search-btn mb-4"
-            style={{ background: 'linear-gradient(90deg, #14724b 0%, #0f4e34 100%)', fontSize: '1.08rem', fontWeight: 700 }}
-            onClick={() => navigate('/create')}
+      {/* Only show sidebar profile on desktop */}
+      {!isMobile && (
+        <aside className="posts-search-sidebar">
+          {isAdmin && (
+            <button
+              className="posts-search-btn mb-4"
+              style={{ background: 'linear-gradient(90deg, #14724b 0%, #0f4e34 100%)', fontSize: '1.08rem', fontWeight: 700 }}
+              onClick={() => navigate('/create')}
+            >
+              + Create Post
+            </button>
+          )}
+          <form
+            className="posts-search-bar"
+            onSubmit={e => {
+              e.preventDefault();
+              setSearchQuery(search);
+            }}
+            autoComplete="off"
           >
-            + Create Post
-          </button>
-        )}
-        <form
-          className="posts-search-bar"
-          onSubmit={e => {
-            e.preventDefault();
-            setSearchQuery(search);
-          }}
-          autoComplete="off"
-        >
-          <input
-            type="text"
-            name="search"
-            className="posts-search-input"
-            placeholder="Search..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
-          <button type="submit" className="posts-search-btn">Search</button>
-        </form>
-        <div className="profile-section">
-          <img src="/pic.jpg" alt="Profile" className="profile-photo" />
-          <div className="profile-desc">
-            <h4>Dr S Jayasree</h4>
-            <p>I'm Dr S Jayasree, a veterinary surgeon and artist who finds beauty in both healing and creation. Whether I’m in the operating room or the studio, I bring precision, compassion, and artistry to everything I do.</p>
-          </div>
-          <div className="contact-section" style={{ marginTop: '1.5rem', padding: '1rem 0', borderTop: '1px solid #eee', textAlign: 'center' }}>
-            <h5 style={{ marginBottom: '0.5rem', fontWeight: 600 }}>Contact Me</h5>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '1.2rem', marginBottom: '0.7rem' }}>
-              <a href="https://www.facebook.com/jayasree.siji" target="_blank" rel="noopener noreferrer">
-                <img src="/fb.png" alt="Facebook" style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }} />
-              </a>
-              <a href="https://linkedin.com/in/dr-s-jayasree" target="_blank" rel="noopener noreferrer">
-                <img src="/linkedin.png" alt="LinkedIn" style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }} />
-              </a>
-              <a href="https://instagram.com/dr_s_jayasree" target="_blank" rel="noopener noreferrer">
-                <img src="/ig.png" alt="Instagram" style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }} />
-              </a>
-              <a href="https://youtube.com/@DrSJayasreeVeterinarian" target="_blank" rel="noopener noreferrer">
-                <img src="/yt.png" alt="YouTube" style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }} />
-              </a>
-            </div>
-          </div>
-        </div>
-      </aside>
+            <input
+              type="text"
+              name="search"
+              className="posts-search-input"
+              placeholder="Search..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+            <button type="submit" className="posts-search-btn">Search</button>
+          </form>
+          {ProfileSection}
+        </aside>
+      )}
     </div>
   );
 }
