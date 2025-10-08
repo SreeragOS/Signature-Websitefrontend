@@ -161,7 +161,7 @@ function PostList() {
     return (
       <li key={comment.id} style={{ marginBottom: '1rem' }}>
         <div style={{display:'flex', alignItems:'center', gap:'0.7rem'}}>
-          <span><strong>{comment.author || 'Anonymous'}:</strong> {comment.content}</span>
+          <span style={{fontSize:'1.08rem'}}><strong>{comment.author || 'Anonymous'}:</strong> {comment.content}</span>
           {isAdmin && (
             <button
               onClick={() => handleDeleteComment(comment.id)}
