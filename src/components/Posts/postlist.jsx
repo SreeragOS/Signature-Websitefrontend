@@ -1,3 +1,13 @@
+  // Admin delete comment
+  const handleDeleteComment = async (commentId) => {
+    if (!window.confirm('Are you sure you want to delete this comment?')) return;
+    try {
+      await api.delete(`comments/${commentId}/`);
+      setRefresh(prev => !prev);
+    } catch (err) {
+      console.error('Delete comment failed:', err);
+    }
+  };
 export default PostList;
 const categories = [
   'Art',
@@ -81,16 +91,28 @@ function PostList() {
     }
   };
 
-  // Filter posts by searchQuery (case-insensitive, by title)
-  let filteredPosts = posts.filter(post =>
-    post.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter and sort posts by searchQuery relevance (case-insensitive, by title and content)
+  let filteredPosts = posts
+    .map(post => {
+      const titleMatches = (post.title.match(new RegExp(searchQuery, 'gi')) || []).length;
+      const contentMatches = (post.content?.match(new RegExp(searchQuery, 'gi')) || []).length;
+      const relevance = titleMatches * 2 + contentMatches; // title matches count double
+      return { ...post, relevance };
+    })
+    .filter(post => post.relevance > 0 || !searchQuery)
+    .sort((a, b) => b.relevance - a.relevance);
   // Further filter by category/subcategory if present in URL
   if (category && subcategory) {
     const norm = str => str?.toLowerCase().trim().replace(/\s+/g, '');
     filteredPosts = filteredPosts.filter(post =>
       norm(post.category) === norm(category) && norm(post.subcategory) === norm(subcategory)
     );
+  } else {
+    // On homepage, exclude posts in category 'veterinary' and subcategory 'files'
+    filteredPosts = filteredPosts.filter(post => {
+      const norm = str => str?.toLowerCase().trim().replace(/\s+/g, '');
+      return !(norm(post.category) === 'veterinary' && norm(post.subcategory) === 'files');
+    });
   }
 
   // Helper for profile/about section
@@ -128,6 +150,129 @@ function PostList() {
     window.addEventListener('resize', handler);
     return () => window.removeEventListener('resize', handler);
   }, []);
+
+  // Recursive comment rendering
+  const renderComment = (comment, postId) => {
+    const [showReplies, setShowReplies] = [
+      commentText[`showReplies-${comment.id}`] ?? true,
+      (val) => setCommentText(prev => ({ ...prev, [`showReplies-${comment.id}`]: val }))
+    ];
+    return (
+      <li key={comment.id} style={{ marginBottom: '1rem' }}>
+        <div style={{display:'flex', alignItems:'center', gap:'0.7rem'}}>
+          <span><strong>{comment.author || 'Anonymous'}:</strong> {comment.content}</span>
+          {isAdmin && (
+            <button
+              onClick={() => handleDeleteComment(comment.id)}
+              style={{
+                background: '#2563eb',
+                color: 'white',
+                padding: '0.12rem 0.5rem',
+                borderRadius: '4px',
+                fontWeight: 600,
+                border: 'none',
+                fontSize: '0.88rem',
+                cursor: 'pointer',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.07)'
+              }}
+            >
+              Delete
+            </button>
+          )}
+        </div>
+        {/* Replies toggle */}
+        {comment.replies && comment.replies.length > 0 && (
+          <div style={{ marginTop: '0.3rem' }}>
+            {showReplies ? (
+              <>
+                <span
+                  style={{ color: '#001f4d', cursor: 'pointer', fontSize: '0.98rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
+                  onClick={() => setShowReplies(false)}
+                >
+                  <span style={{fontSize:'1.3em', fontWeight:'bold', display:'inline-block', transform:'rotate(-90deg)', fontFamily:'monospace'} }>&gt;</span> Hide replies
+                </span>
+                <ul style={{ marginLeft: '1.5rem', marginTop: '0.5rem', listStyle: 'circle' }}>
+                  {comment.replies.map(reply => renderComment(reply, postId))}
+                </ul>
+              </>
+            ) : (
+              <span
+                style={{ color: '#001f4d', cursor: 'pointer', fontSize: '0.98rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
+                onClick={() => setShowReplies(true)}
+              >
+                <span style={{fontSize:'1.3em', fontWeight:'bold', display:'inline-block', transform:'rotate(90deg)', fontFamily:'monospace'} }>&gt;</span> View replies
+              </span>
+            )}
+          </div>
+        )}
+        {/* Reply link for each comment */}
+        {token && (
+          <div style={{ marginTop: '0.5rem' }}>
+            {!commentText[`showReply-${comment.id}`] ? (
+              <span
+                style={{ color: '#001f4d', cursor: 'pointer', fontSize: '0.98rem', textDecoration: 'none' }}
+                onClick={() => setCommentText(prev => ({ ...prev, [`showReply-${comment.id}`]: true }))}
+              >
+                reply
+              </span>
+            ) : (
+              <div style={{display:'flex', gap:'0.5rem', alignItems:'center'}}>
+                <input
+                  type="text"
+                  value={commentText[`reply-${comment.id}`] || ''}
+                  onChange={e => handleCommentChange(`reply-${comment.id}`, e.target.value)}
+                  placeholder="Write a reply..."
+                  className="p-2 border rounded mb-2"
+                  style={{width:'220px'}}
+                />
+                <button
+                  onClick={() => {
+                    handleReplySubmit(postId, comment.id);
+                    setCommentText(prev => ({ ...prev, [`showReply-${comment.id}`]: false }));
+                  }}
+                  style={{
+                    background: '#2563eb',
+                    color: 'white',
+                    padding: '0.12rem 0.5rem',
+                    borderRadius: '4px',
+                    fontWeight: 600,
+                    border: 'none',
+                    fontSize: '0.88rem',
+                    cursor: 'pointer',
+                    marginTop: '0.2rem',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
+                    height: '1.5rem',
+                    lineHeight: '1.1'
+                  }}
+                >
+                  Reply
+                </button>
+                <button
+                  onClick={() => setCommentText(prev => ({ ...prev, [`showReply-${comment.id}`]: false }))}
+                  style={{
+                    background: '#64748b',
+                    color: 'white',
+                    padding: '0.12rem 0.5rem',
+                    borderRadius: '4px',
+                    fontWeight: 600,
+                    border: 'none',
+                    fontSize: '0.88rem',
+                    cursor: 'pointer',
+                    marginTop: '0.2rem',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
+                    height: '1.5rem',
+                    lineHeight: '1.1'
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </li>
+    );
+  };
 
   return (
     <div className="container posts-main-flex">
@@ -251,16 +396,36 @@ function PostList() {
                   </div>
                 )}
                 {isAdmin && (
-                  <div className="mt-2 space-x-2">
+                  <div className="mt-2 space-x-2" style={{display:'flex', gap:'0.7rem'}}>
                     <button
-                      className="bg-yellow-500 text-white px-3 py-1 rounded"
                       onClick={() => navigate(`/edit/${post.id}`)}
+                      style={{
+                        background: '#2563eb',
+                        color: 'white',
+                        padding: '0.12rem 0.5rem',
+                        borderRadius: '4px',
+                        fontWeight: 600,
+                        border: 'none',
+                        fontSize: '0.88rem',
+                        cursor: 'pointer',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.07)'
+                      }}
                     >
                       Edit
                     </button>
                     <button
-                      className="bg-red-600 text-white px-3 py-1 rounded"
                       onClick={() => handleDelete(post.id)}
+                      style={{
+                        background: '#2563eb',
+                        color: 'white',
+                        padding: '0.12rem 0.5rem',
+                        borderRadius: '4px',
+                        fontWeight: 600,
+                        border: 'none',
+                        fontSize: '0.88rem',
+                        cursor: 'pointer',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.07)'
+                      }}
                     >
                       Delete
                     </button>
@@ -269,74 +434,32 @@ function PostList() {
                 {/* Comments toggle */}
                 <div style={{ marginTop: '1.2rem' }}>
                   {!commentText[`showComments-${post.id}`] ? (
-                    <span
-                      style={{ color: '#007bff', cursor: 'pointer', fontWeight: 600, textDecoration: 'underline', fontSize: '1.08rem' }}
-                      onClick={() => setCommentText(prev => ({ ...prev, [`showComments-${post.id}`]: true }))}
-                    >
-                      Comments
-                    </span>
+                    (() => {
+                      const commentCount = post.comments?.filter(c => !c.parent).length || 0;
+                      return (
+                        <span
+                          style={{ color: '#222', cursor: 'pointer', fontWeight: 600, fontSize: '1.08rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                          onClick={() => setCommentText(prev => ({ ...prev, [`showComments-${post.id}`]: true }))}
+                        >
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{verticalAlign:'middle'}}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                          {commentCount > 0 ? commentCount : ''}
+                        </span>
+                      );
+                    })()
                   ) : (
                     <>
+                      <span
+                        style={{ color: '#222', cursor: 'pointer', fontWeight: 600, fontSize: '1.08rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.7rem' }}
+                        onClick={() => setCommentText(prev => ({ ...prev, [`showComments-${post.id}`]: false }))}
+                      >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{verticalAlign:'middle'}}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        {post.comments?.filter(c => !c.parent).length || ''}
+                      </span>
                       <ul className="mb-2 pl-4 list-disc">
                         {post.comments?.length > 0 ? (
-                          post.comments.map(comment => (
-                            <li key={comment.id} style={{ marginBottom: '1rem' }}>
-                              <strong>{comment.author || 'Anonymous'}:</strong> {comment.content}
-                              {/* Replies toggle */}
-                              {comment.replies && comment.replies.length > 0 && (
-                                <div style={{ marginTop: '0.3rem' }}>
-                                  {!commentText[`showReplies-${comment.id}`] ? (
-                                    <span
-                                      style={{ color: '#007bff', cursor: 'pointer', fontSize: '0.98rem', textDecoration: 'underline' }}
-                                      onClick={() => setCommentText(prev => ({ ...prev, [`showReplies-${comment.id}`]: true }))}
-                                    >
-                                      View replies
-                                    </span>
-                                  ) : (
-                                    <ul style={{ marginLeft: '1.5rem', marginTop: '0.5rem', listStyle: 'circle' }}>
-                                      {comment.replies.map(reply => (
-                                        <li key={reply.id}>
-                                          <strong>{reply.author || 'Anonymous'}:</strong> {reply.content}
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  )}
-                                </div>
-                              )}
-                              {/* Reply link for each comment */}
-                              {token && (
-                                <div style={{ marginTop: '0.5rem' }}>
-                                  {!commentText[`showReply-${comment.id}`] ? (
-                                    <span
-                                      style={{ color: '#007bff', cursor: 'pointer', fontSize: '0.98rem', textDecoration: 'underline' }}
-                                      onClick={() => setCommentText(prev => ({ ...prev, [`showReply-${comment.id}`]: true }))}
-                                    >
-                                      reply
-                                    </span>
-                                  ) : (
-                                    <div>
-                                      <input
-                                        type="text"
-                                        value={commentText[`reply-${comment.id}`] || ''}
-                                        onChange={e => handleCommentChange(`reply-${comment.id}`, e.target.value)}
-                                        placeholder="Write a reply..."
-                                        className="w-full p-2 border rounded mb-2"
-                                      />
-                                      <button
-                                        onClick={() => {
-                                          handleReplySubmit(post.id, comment.id);
-                                          setCommentText(prev => ({ ...prev, [`showReply-${comment.id}`]: false }));
-                                        }}
-                                        className="bg-blue-500 text-white py-1 px-3 rounded"
-                                      >
-                                        Reply
-                                      </button>
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-                            </li>
-                          ))
+                          post.comments
+                            .filter(comment => !comment.parent) // Only top-level comments
+                            .map(comment => renderComment(comment, post.id))
                         ) : (
                           <li>No comments yet</li>
                         )}
@@ -354,7 +477,7 @@ function PostList() {
                             onClick={() => handleCommentSubmit(post.id)}
                             className="bg-blue-600 text-white py-1 px-4 rounded"
                           >
-                            Submit
+                            Comment
                           </button>
                         </div>
                       )}
