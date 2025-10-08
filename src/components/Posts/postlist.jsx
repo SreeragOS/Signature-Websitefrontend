@@ -153,8 +153,9 @@ function PostList() {
 
   // Recursive comment rendering
   const renderComment = (comment, postId) => {
+    // Replies are hidden by default unless toggled
     const [showReplies, setShowReplies] = [
-      commentText[`showReplies-${comment.id}`] ?? true,
+      commentText[`showReplies-${comment.id}`] ?? false,
       (val) => setCommentText(prev => ({ ...prev, [`showReplies-${comment.id}`]: val }))
     ];
     return (
