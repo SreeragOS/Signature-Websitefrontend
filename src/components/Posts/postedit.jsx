@@ -52,33 +52,42 @@ function PostEdit() {
   };
 
   return (
-    <div className="form-wrapper">
-      <div className="form-box">
-        <h2>Edit Post</h2>
-        <form onSubmit={handleSubmit}>
+    <div className="form-wrapper" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+      <div className="form-box" style={{ background: '#f7faf5', padding: '2.2rem 2.5rem', borderRadius: '12px', boxShadow: '0 8px 20px rgba(0,0,0,0.07)', maxWidth: '420px', width: '100%' }}>
+        <h2 style={{ textAlign: 'center', marginBottom: '1.5rem', fontWeight: 700 }}>Edit Post</h2>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+          <label style={{ fontWeight: 600, marginBottom: '0.3rem' }} htmlFor="title">Title</label>
           <input
             type="text"
             name="title"
+            id="title"
             value={formData.title}
             onChange={handleChange}
             placeholder="Title"
             required
+            style={{ padding: '0.7rem', borderRadius: '6px', border: '1px solid #ccc', fontSize: '1.08rem' }}
           />
+          <label style={{ fontWeight: 600, marginBottom: '0.3rem' }} htmlFor="content">Content</label>
           <textarea
             name="content"
+            id="content"
             value={formData.content}
             onChange={handleChange}
             placeholder="Content"
             rows="5"
             required
+            style={{ padding: '0.7rem', borderRadius: '6px', border: '1px solid #ccc', fontSize: '1.08rem', resize: 'vertical' }}
           />
+          <label style={{ fontWeight: 600, marginBottom: '0.3rem' }} htmlFor="image">Image</label>
           <input
             type="file"
             name="image"
+            id="image"
             accept="image/*"
             onChange={handleChange}
+            style={{ fontSize: '1.08rem' }}
           />
-          <button type="submit">Update</button>
+          <button type="submit" style={{ background: '#2563eb', color: 'white', padding: '0.7rem 1.2rem', borderRadius: '6px', fontWeight: 700, border: 'none', fontSize: '1.08rem', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.07)' }}>Update</button>
         </form>
       </div>
     </div>

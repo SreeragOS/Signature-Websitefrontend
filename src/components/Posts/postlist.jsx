@@ -2,7 +2,7 @@
   const handleDeleteComment = async (commentId) => {
     if (!window.confirm('Are you sure you want to delete this comment?')) return;
     try {
-      await api.delete(`comments/${commentId}/`);
+      await api.delete(`comments/${commentId}/delete/`);
       setRefresh(prev => !prev);
     } catch (err) {
       console.error('Delete comment failed:', err);
