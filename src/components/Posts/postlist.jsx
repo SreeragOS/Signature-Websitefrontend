@@ -414,16 +414,15 @@ function PostList() {
                               document.body.removeChild(link);
                             }}
                             style={{
-                              padding: '0.6rem 1.2rem',
-                              background: 'linear-gradient(90deg, #f8ffae 0%, #43c6ac 100%)',
-                              color: '#333',
-                              borderRadius: '8px',
+                              background: '#2563eb',
+                              color: 'white',
+                              padding: '0.32rem 1.1rem',
+                              borderRadius: '6px',
                               fontWeight: 600,
-                              textDecoration: 'none',
-                              fontSize: '1.08rem',
-                              boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
                               border: 'none',
-                              cursor: 'pointer'
+                              fontSize: '1.08rem',
+                              cursor: 'pointer',
+                              boxShadow: '0 2px 8px rgba(0,0,0,0.07)'
                             }}
                           >
                             Download
