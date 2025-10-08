@@ -86,9 +86,9 @@ function Navbar() {
                   textShadow: '0 2px 16px rgba(0,0,0,0.12)'
                 }}>{cat.name}</a>
                 {cat.subcategories && cat.subcategories.length > 0 && (
-                  <ul className="navbar-dropdown">
+                  <ul className="navbar-dropdown" style={{ listStyle: 'none', paddingLeft: 0, margin: 0 }}>
                     {cat.subcategories.map(sub => (
-                      <li key={sub}>
+                      <li key={sub} style={{ listStyle: 'none', paddingLeft: 0, margin: 0 }}>
                         <a
                           href="#"
                           className="navbar-dropdown-link"
