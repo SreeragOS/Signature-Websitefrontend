@@ -218,13 +218,12 @@ function PostList() {
               </span>
             ) : (
               <div style={{display:'flex', gap:'0.5rem', alignItems:'center'}}>
-                <input
-                  type="text"
+                <textarea
                   value={commentText[`reply-${comment.id}`] || ''}
                   onChange={e => handleCommentChange(`reply-${comment.id}`, e.target.value)}
                   placeholder="Write a reply..."
-                  className="p-2 border rounded mb-2"
-                  style={{width:'220px'}}
+                  className="p-2 rounded mb-2"
+                  style={{width:'220px', minHeight:'48px', border:'none', boxShadow:'0 1px 4px rgba(0,0,0,0.07)', resize:'vertical'}}
                 />
                 <button
                   onClick={() => {
@@ -232,18 +231,21 @@ function PostList() {
                     setCommentText(prev => ({ ...prev, [`showReply-${comment.id}`]: false }));
                   }}
                   style={{
-                    background: '#2563eb',
-                    color: 'white',
+                    background: 'linear-gradient(90deg, #14724b 0%, #0f4e34 100%)',
+                    color: '#d8f3ed',
                     padding: '0.12rem 0.5rem',
-                    borderRadius: '4px',
-                    fontWeight: 600,
+                    borderRadius: '999px',
+                    fontWeight: 700,
                     border: 'none',
-                    fontSize: '0.88rem',
+                    fontSize: '1.0rem',
                     cursor: 'pointer',
                     marginTop: '0.2rem',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
                     height: '1.5rem',
-                    lineHeight: '1.1'
+                    lineHeight: '1.1',
+                    maxWidth: '100%',
+                    whiteSpace: 'nowrap',
+                    transition: 'none'
                   }}
                 >
                   Reply
@@ -503,12 +505,12 @@ function PostList() {
                       </ul>
                       {token && (
                         <div className="comment-form mt-2">
-                          <input
-                            type="text"
+                          <textarea
                             value={commentText[post.id] || ''}
                             onChange={(e) => handleCommentChange(post.id, e.target.value)}
                             placeholder="Write a comment..."
-                            className="w-full p-2 border rounded mb-2"
+                            className="w-full p-2 rounded mb-2"
+                            style={{minHeight:'48px', border:'none', boxShadow:'0 1px 4px rgba(0,0,0,0.07)', resize:'vertical'}}
                           />
                           <button
                             onClick={() => handleCommentSubmit(post.id)}

@@ -253,13 +253,12 @@
   margin-left: 0.3rem;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-  transition: background 0.18s, transform 0.12s;
+  transition: none;
   max-width: 100%;
   white-space: nowrap;
 }
 .posts-search-btn:hover {
-  background: linear-gradient(90deg, #007bff 0%, #4b0082 100%);
-  transform: translateY(-2px) scale(1.04);
+  background: linear-gradient(90deg, #14724b 0%, #0f4e34 100%);
 }
 
 /* Container holding all posts */
@@ -324,6 +323,11 @@
 /* Comment section */
 .comment-form {
   margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  margin-bottom: 0;
 }
 
 .comment-form input {
@@ -336,18 +340,23 @@
 }
 
 .comment-form button {
-  background: #007bff;
-  color: white;
+  background: linear-gradient(90deg, #14724b 0%, #0f4e34 100%);
+  color: #d8f3ed;
   border: none;
   padding: 0.65rem 1.2rem;
-  border-radius: 4px;
-  font-weight: 500;
+  margin-bottom: 0;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1.0rem;
   cursor: pointer;
-  transition: background 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  max-width: 100%;
+  white-space: nowrap;
+  transition: none;
 }
 
 .comment-form button:hover {
-  background: #0056b3;
+  background: linear-gradient(90deg, #14724b 0%, #0f4e34 100%);
 }
 
 /* Comments list */
