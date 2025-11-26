@@ -99,8 +99,14 @@ function PostList() {
       const relevance = titleMatches * 2 + contentMatches; // title matches count double
       return { ...post, relevance };
     })
-    .filter(post => post.relevance > 0 || !searchQuery)
-    .sort((a, b) => b.relevance - a.relevance);
+    .filter(post => post.relevance > 0 || !searchQuery);
+
+  // On homepage, show newest posts first
+  if (!category && !subcategory) {
+    filteredPosts = filteredPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  } else {
+    filteredPosts = filteredPosts.sort((a, b) => b.relevance - a.relevance);
+  }
   // Further filter by category/subcategory if present in URL
   if (category && subcategory) {
     const norm = str => str?.toLowerCase().trim().replace(/\s+/g, '');
@@ -118,10 +124,10 @@ function PostList() {
   // Helper for profile/about section
   const ProfileSection = (
     <div className="profile-section">
-      <img src="/pic.jpg" alt="Profile" className="profile-photo" />
+      <img src="/pic.jpg" alt="Profile" className="profile-photo" style={{ width: '200px', height: '200px', borderRadius: '50%', objectFit: 'cover' }} />
       <div className="profile-desc">
         <h4>Dr S Jayasree</h4>
-        <p>I'm Dr S Jayasree, a veterinary surgeon and artist who finds beauty in both healing and creation. Whether I’m in the operating room or the studio, I bring precision, compassion, and artistry to everything I do.</p>
+        <p>I am Dr. S. Jayasree , a Veterinary Doctor, writer, artist, and cancer survivor  who finds beauty in both healing and creation. Wherever I'm  I try to bring precision, compassion, and artistry to everything I do.</p>
       </div>
       <div className="contact-section" style={{ marginTop: '1.5rem', padding: '1rem 0', borderTop: '1px solid #eee', textAlign: 'center' }}>
         <h5 style={{ marginBottom: '0.5rem', fontWeight: 600 }}>Contact Me</h5>
