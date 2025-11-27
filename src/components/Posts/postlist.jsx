@@ -346,38 +346,39 @@ function PostList() {
                 )}
                 <div>
                   {(!category && !subcategory) ? (
-                    <>
-                      <p style={{
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        marginBottom: '0.5rem',
-                        fontSize: '1rem'
-                      }}>
-                        {post.content}
-                      </p>
-                      {post.content && post.content.length > 0 && !commentText[`showFull-${post.id}`] && (
+                    commentText[`showFull-${post.id}`] ? (
+                      <>
+                        <p style={{marginTop:'0.5rem', fontSize:'1rem'}}>{post.content}</p>
                         <span
                           style={{ color: '#001f4d', cursor: 'pointer', fontSize: '0.98rem', textDecoration: 'none', fontWeight: 600, marginLeft: '0.5rem' }}
-                          onClick={() => setCommentText(prev => ({ ...prev, [`showFull-${post.id}`]: true }))}
+                          onClick={() => setCommentText(prev => ({ ...prev, [`showFull-${post.id}`]: false }))}
                         >
-                          Show more
+                          Show less
                         </span>
-                      )}
-                      {commentText[`showFull-${post.id}`] && (
-                        <>
-                          <p style={{marginTop:'0.5rem', fontSize:'1rem'}}>{post.content}</p>
+                      </>
+                    ) : (
+                      <>
+                        <p style={{
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          marginBottom: '0.5rem',
+                          fontSize: '1rem'
+                        }}>
+                          {post.content}
+                        </p>
+                        {post.content && post.content.length > 0 && (
                           <span
                             style={{ color: '#001f4d', cursor: 'pointer', fontSize: '0.98rem', textDecoration: 'none', fontWeight: 600, marginLeft: '0.5rem' }}
-                            onClick={() => setCommentText(prev => ({ ...prev, [`showFull-${post.id}`]: false }))}
+                            onClick={() => setCommentText(prev => ({ ...prev, [`showFull-${post.id}`]: true }))}
                           >
-                            Show less
+                            Show more
                           </span>
-                        </>
-                      )}
-                    </>
+                        )}
+                      </>
+                    )
                   ) : (
                     <p>{post.content}</p>
                   )}

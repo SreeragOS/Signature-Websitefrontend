@@ -148,19 +148,14 @@ function PostCreate() {
               <option key={sub.value} value={sub.value}>{sub.label}</option>
             ))}
           </select>
-          {/* Show document upload only for Files subcategory */}
-          {formData.subcategory === 'files' && (
-            <>
-              <label className="custom-label">Upload Document (ppt, pdf, docx):</label>
-              <input
-                name="document"
-                type="file"
-                accept=".ppt,.pptx,.pdf,.doc,.docx,application/vnd.ms-powerpoint,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                onChange={handleChange}
-                style={{ marginBottom: '1rem' }}
-              />
-            </>
-          )}
+          <label className="custom-label">Upload Document (ppt, pdf, docx):</label>
+          <input
+            name="document"
+            type="file"
+            accept=".ppt,.pptx,.pdf,.doc,.docx,application/vnd.ms-powerpoint,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+            onChange={handleChange}
+            style={{ marginBottom: '1rem' }}
+          />
           <button type="submit" className="create-post-btn">Create Post</button>
         </form>
       </div>
