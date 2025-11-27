@@ -12,7 +12,8 @@ export default PostList;
 const categories = [
   'Art',
   'Profession',
-  'Literature'
+  'Literature',
+  'Personal',
 ];
 import { useEffect, useState } from 'react';
 
@@ -110,9 +111,12 @@ function PostList() {
   // Further filter by category/subcategory if present in URL
   if (category && subcategory) {
     const norm = str => str?.toLowerCase().trim().replace(/\s+/g, '');
-    filteredPosts = filteredPosts.filter(post =>
-      norm(post.category) === norm(category) && norm(post.subcategory) === norm(subcategory)
-    );
+    filteredPosts = filteredPosts.filter(post => {
+      if (norm(category) === 'personal' && norm(subcategory) === 'achievements') {
+        return norm(post.category) === 'personal' && norm(post.subcategory) === 'achievements';
+      }
+      return norm(post.category) === norm(category) && norm(post.subcategory) === norm(subcategory);
+    });
   } else {
     // On homepage, exclude posts in category 'veterinary' and subcategory 'files'
     filteredPosts = filteredPosts.filter(post => {

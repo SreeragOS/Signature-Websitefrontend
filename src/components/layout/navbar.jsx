@@ -17,7 +17,7 @@ const categories = [
   },
   {
     name: 'Personal',
-    subcategories: ['personal'] // must match backend value
+    subcategories: ['personal', 'achievements'] // must match backend value
   }
 ];
 

@@ -18,7 +18,10 @@ function PostCreate() {
   });
 
   const categoryOptions = [
-    { value: 'Personal', label: 'Personal', subcategories: [ { value: 'personal', label: 'Personal' } ] },
+    { value: 'Personal', label: 'Personal', subcategories: [
+      { value: 'personal', label: 'Personal' },
+      { value: 'achievements', label: 'Achievements' }
+    ] },
     { value: 'Veterinary', label: 'Veterinary', subcategories: [
       { value: 'Experiences', label: 'Experiences' },
       { value: 'case studies', label: 'Case Studies' },
