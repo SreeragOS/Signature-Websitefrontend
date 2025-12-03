@@ -27,6 +27,10 @@ import { useParams } from 'react-router-dom';
 
 function PostList() {
   const [posts, setPosts] = useState([]);
+  // Notification banner state (frontend only)
+  const [banner, setBanner] = useState(localStorage.getItem('notificationBanner') || 'Welcome to the blog! This is a test notification banner.');
+  const [bannerLink, setBannerLink] = useState(localStorage.getItem('notificationBannerLink') || 'https://www.amazon.in/dp/9392094655');
+  const [editingBanner, setEditingBanner] = useState(false);
   const [error, setError] = useState('');
   const [commentText, setCommentText] = useState({});
   const [refresh, setRefresh] = useState(false);
@@ -46,6 +50,13 @@ function PostList() {
         setError('Could not fetch posts');
       });
   }, [refresh]);
+  // Sync banner with localStorage
+  useEffect(() => {
+    localStorage.setItem('notificationBanner', banner);
+  }, [banner]);
+  useEffect(() => {
+    localStorage.setItem('notificationBannerLink', bannerLink);
+  }, [bannerLink]);
 
   const handleCommentChange = (key, text) => {
     setCommentText(prev => ({ ...prev, [key]: text }));
@@ -291,6 +302,31 @@ function PostList() {
     <div className="container posts-main-flex">
       {isMobile && (
         <div style={{ width: '100%' }}>
+          {/* Notification Banner (above profile, under search) */}
+          {banner && !editingBanner && (
+            <div className="notification-banner" style={{background:'#fef3c7',color:'#92400e',padding:'0.7rem 1.2rem',borderRadius:'8px',marginBottom:'1rem',fontWeight:600,boxShadow:'0 2px 8px rgba(0,0,0,0.07)',display:'flex',alignItems:'center',gap:'1.2rem',flexWrap:'wrap'}}>
+              <span>{banner}</span>
+              {bannerLink && (
+                <a href={bannerLink} target="_blank" rel="noopener noreferrer" style={{textDecoration:'none'}}>
+                  <button style={{background:'#2563eb',color:'#fff',border:'none',borderRadius:'4px',padding:'0.2rem 0.7rem',fontWeight:600,cursor:'pointer'}}>Visit Link</button>
+                </a>
+              )}
+              {isAdmin && (
+                <button style={{marginLeft:'1rem',background:'#f59e42',color:'#fff',border:'none',borderRadius:'4px',padding:'0.2rem 0.7rem',fontWeight:600,cursor:'pointer'}} onClick={()=>setEditingBanner(true)}>Edit</button>
+              )}
+            </div>
+          )}
+          {editingBanner && isAdmin && (
+            <div className="notification-banner-edit" style={{marginBottom:'1rem'}}>
+              <textarea value={banner} onChange={e=>setBanner(e.target.value)} style={{width:'100%',minHeight:'48px',borderRadius:'6px',padding:'0.5rem',fontSize:'1rem',marginBottom:'0.5rem'}} placeholder="Enter notification banner text..." />
+              <input type="text" value={bannerLink} onChange={e=>setBannerLink(e.target.value)} style={{width:'100%',borderRadius:'6px',padding:'0.5rem',fontSize:'1rem',marginBottom:'0.5rem',border:'1px solid #ddd'}} placeholder="Enter clickable link (https://...)" />
+              <div style={{display:'flex',gap:'0.7rem'}}>
+                <button style={{background:'#2563eb',color:'#fff',border:'none',borderRadius:'4px',padding:'0.2rem 0.7rem',fontWeight:600,cursor:'pointer'}} onClick={()=>setEditingBanner(false)}>Save</button>
+                <button style={{background:'#64748b',color:'#fff',border:'none',borderRadius:'4px',padding:'0.2rem 0.7rem',fontWeight:600,cursor:'pointer'}} onClick={()=>{setEditingBanner(false);setBanner(localStorage.getItem('notificationBanner')||'');setBannerLink(localStorage.getItem('notificationBannerLink')||'')}}>Cancel</button>
+                <button style={{background:'#ef4444',color:'#fff',border:'none',borderRadius:'4px',padding:'0.2rem 0.7rem',fontWeight:600,cursor:'pointer'}} onClick={()=>{setBanner('');setBannerLink('');setEditingBanner(false)}}>Remove</button>
+              </div>
+            </div>
+          )}
           {ProfileSection}
           {isAdmin && (
             <button
@@ -548,6 +584,31 @@ function PostList() {
       {/* Only show sidebar profile on desktop */}
       {!isMobile && (
         <aside className="posts-search-sidebar">
+          {/* Notification Banner (above profile, under search) */}
+          {banner && !editingBanner && (
+            <div className="notification-banner" style={{background:'#fef3c7',color:'#92400e',padding:'0.7rem 1.2rem',borderRadius:'8px',marginBottom:'1rem',fontWeight:600,boxShadow:'0 2px 8px rgba(0,0,0,0.07)',display:'flex',alignItems:'center',gap:'1.2rem',flexWrap:'wrap'}}>
+              <span>{banner}</span>
+              {bannerLink && (
+                <a href={bannerLink} target="_blank" rel="noopener noreferrer" style={{textDecoration:'none'}}>
+                  <button style={{background:'#2563eb',color:'#fff',border:'none',borderRadius:'4px',padding:'0.2rem 0.7rem',fontWeight:600,cursor:'pointer'}}>Visit Link</button>
+                </a>
+              )}
+              {isAdmin && (
+                <button style={{marginLeft:'1rem',background:'#f59e42',color:'#fff',border:'none',borderRadius:'4px',padding:'0.2rem 0.7rem',fontWeight:600,cursor:'pointer'}} onClick={()=>setEditingBanner(true)}>Edit</button>
+              )}
+            </div>
+          )}
+          {editingBanner && isAdmin && (
+            <div className="notification-banner-edit" style={{marginBottom:'1rem'}}>
+              <textarea value={banner} onChange={e=>setBanner(e.target.value)} style={{width:'100%',minHeight:'48px',borderRadius:'6px',padding:'0.5rem',fontSize:'1rem',marginBottom:'0.5rem'}} placeholder="Enter notification banner text..." />
+              <input type="text" value={bannerLink} onChange={e=>setBannerLink(e.target.value)} style={{width:'100%',borderRadius:'6px',padding:'0.5rem',fontSize:'1rem',marginBottom:'0.5rem',border:'1px solid #ddd'}} placeholder="Enter clickable link (https://...)" />
+              <div style={{display:'flex',gap:'0.7rem'}}>
+                <button style={{background:'#2563eb',color:'#fff',border:'none',borderRadius:'4px',padding:'0.2rem 0.7rem',fontWeight:600,cursor:'pointer'}} onClick={()=>setEditingBanner(false)}>Save</button>
+                <button style={{background:'#64748b',color:'#fff',border:'none',borderRadius:'4px',padding:'0.2rem 0.7rem',fontWeight:600,cursor:'pointer'}} onClick={()=>{setEditingBanner(false);setBanner(localStorage.getItem('notificationBanner')||'');setBannerLink(localStorage.getItem('notificationBannerLink')||'')}}>Cancel</button>
+                <button style={{background:'#ef4444',color:'#fff',border:'none',borderRadius:'4px',padding:'0.2rem 0.7rem',fontWeight:600,cursor:'pointer'}} onClick={()=>{setBanner('');setBannerLink('');setEditingBanner(false)}}>Remove</button>
+              </div>
+            </div>
+          )}
           {isAdmin && (
             <button
               className="posts-search-btn mb-4"
