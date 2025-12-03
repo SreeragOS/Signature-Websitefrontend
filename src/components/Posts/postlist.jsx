@@ -28,7 +28,7 @@ import { useParams } from 'react-router-dom';
 function PostList() {
   const [posts, setPosts] = useState([]);
   // Notification banner state (frontend only)
-  const [banner, setBanner] = useState(localStorage.getItem('notificationBanner') || 'Welcome to the blog! This is a test notification banner.');
+  const [banner, setBanner] = useState(localStorage.getItem('notificationBanner') || '!!!Pakalnakshathram,\nMy Autobiography.\nClick the link below to buy!!!');
   const [bannerLink, setBannerLink] = useState(localStorage.getItem('notificationBannerLink') || 'https://www.amazon.in/dp/9392094655');
   const [editingBanner, setEditingBanner] = useState(false);
   const [error, setError] = useState('');
