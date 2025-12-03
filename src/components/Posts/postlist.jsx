@@ -373,7 +373,13 @@ function PostList() {
                         }}>
                           {post.content}
                         </p>
-                        {post.content && post.content.length > 0 && (
+                        {post.content &&
+                          (
+                            (() => {
+                              const sentenceCount = (post.content.match(/[.!?]+/g) || []).length;
+                              return (sentenceCount > 2 || post.content.length > 100);
+                            })()
+                          ) && (
                           <span
                             style={{ color: '#001f4d', cursor: 'pointer', fontSize: '0.98rem', textDecoration: 'none', fontWeight: 600, marginLeft: '0.5rem' }}
                             onClick={() => setCommentText(prev => ({ ...prev, [`showFull-${post.id}`]: true }))}
@@ -429,11 +435,11 @@ function PostList() {
                             style={{
                               background: '#2563eb',
                               color: 'white',
-                              padding: '0.32rem 1.1rem',
+                              padding: '0.32rem 0.21rem',
                               borderRadius: '6px',
                               fontWeight: 600,
                               border: 'none',
-                              fontSize: '1.08rem',
+                              fontSize: '.88rem',
                               cursor: 'pointer',
                               boxShadow: '0 2px 8px rgba(0,0,0,0.07)'
                             }}

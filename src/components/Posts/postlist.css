@@ -1,3 +1,18 @@
+/* Shrink Download button to 3/4 of its previous size */
+.download-btn {
+  padding: 0.24rem 0.3rem; /* 3/4 of previous 0.32rem 0.4rem */
+  font-size: 0.75rem;      /* 3/4 of 1rem */
+  min-width: 45px;         /* Optional: shrink min width */
+  border-radius: 6px;
+  background: #14724b;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.download-btn:hover {
+  background: #0f4e34;
+}
 @media (max-width: 600px) {
   .profile-section {
     font-size: 0.85rem !important;
