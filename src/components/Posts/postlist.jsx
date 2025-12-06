@@ -35,7 +35,6 @@ function PostList() {
   const [commentText, setCommentText] = useState({});
   const [refresh, setRefresh] = useState(false);
   const [search, setSearch] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
 
   const token = localStorage.getItem('token');
   const isAdmin = localStorage.getItem('is_superuser') === 'true';
@@ -103,15 +102,15 @@ function PostList() {
     }
   };
 
-  // Filter and sort posts by searchQuery relevance (case-insensitive, by title and content)
+  // Filter and sort posts by search (case-insensitive, by title and content)
   let filteredPosts = posts
     .map(post => {
-      const titleMatches = (post.title.match(new RegExp(searchQuery, 'gi')) || []).length;
-      const contentMatches = (post.content?.match(new RegExp(searchQuery, 'gi')) || []).length;
+      const titleMatches = (post.title.match(new RegExp(search, 'gi')) || []).length;
+      const contentMatches = (post.content?.match(new RegExp(search, 'gi')) || []).length;
       const relevance = titleMatches * 2 + contentMatches; // title matches count double
       return { ...post, relevance };
     })
-    .filter(post => post.relevance > 0 || !searchQuery);
+    .filter(post => post.relevance > 0 || !search);
 
   // On homepage, show newest posts first
   if (!category && !subcategory) {
@@ -150,8 +149,8 @@ function PostList() {
           <a href="https://www.facebook.com/jayasree.siji" target="_blank" rel="noopener noreferrer">
             <img src="/fb.png" alt="Facebook" style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }} />
           </a>
-          <a href="https://linkedin.com/in/dr-s-jayasree" target="_blank" rel="noopener noreferrer">
-            <img src="/linkedin.png" alt="LinkedIn" style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }} />
+          <a href="https://www.google.com/maps/place/Dr+S+Jayasree+Veterinarian/@9.589713,76.354275,17z/data=!3m1!4b1!4m6!3m5!1s0x3b0887c4b10d1faf:0xe7e13ebfc392c9c8!8m2!3d9.589713!4d76.354275!16s%2Fg%2F11ns3kxr81?hl=en-IN&entry=ttu&g_ep=EgoyMDI1MTIwMi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">
+            <img src="/busi.webp" alt="LinkedIn" style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }} />
           </a>
           <a href="https://instagram.com/dr_s_jayasree" target="_blank" rel="noopener noreferrer">
             <img src="/ig.png" alt="Instagram" style={{ width: '40px', height: '40px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }} />
@@ -337,14 +336,7 @@ function PostList() {
               + Create Post
             </button>
           )}
-          <form
-            className="posts-search-bar"
-            onSubmit={e => {
-              e.preventDefault();
-              setSearchQuery(search);
-            }}
-            autoComplete="off"
-          >
+          <div className="posts-search-bar" style={{ marginBottom: '1.2rem', background: '#e3f3f0ff', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '0.7rem 0.5rem' }}>
             <input
               type="text"
               name="search"
@@ -352,9 +344,10 @@ function PostList() {
               placeholder="Search..."
               value={search}
               onChange={e => setSearch(e.target.value)}
+              autoComplete="off"
+              style={{ width: '100%', background: '#e3f3f0', borderRadius: '10px', border: '1px solid #c2e2db', padding: '0.7rem', fontSize: '1rem', boxShadow: '0 2px 8px rgba(0,0,0,0.07)' }}
             />
-            <button type="submit" className="posts-search-btn">Search</button>
-          </form>
+          </div>
         </div>
       )}
       <main className="posts-center-col">
@@ -618,24 +611,18 @@ function PostList() {
               + Create Post
             </button>
           )}
-          <form
-            className="posts-search-bar"
-            onSubmit={e => {
-              e.preventDefault();
-              setSearchQuery(search);
-            }}
-            autoComplete="off"
-          >
+          <div className="posts-search-bar" style={{ marginBottom: '1.2rem', background: '#e3f3f0' }}>
             <input
               type="text"
               name="search"
               className="posts-search-input"
-              placeholder="Search..."
+              placeholder="Search Posts..."
               value={search}
               onChange={e => setSearch(e.target.value)}
+              autoComplete="off"
+              style={{ width: '100%', background: '#e3f3f0' }}
             />
-            <button type="submit" className="posts-search-btn">Search</button>
-          </form>
+          </div>
           {ProfileSection}
         </aside>
       )}
