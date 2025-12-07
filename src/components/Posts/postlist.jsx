@@ -29,7 +29,7 @@ function PostList() {
   const [posts, setPosts] = useState([]);
   // Notification banner state (frontend only)
   const [banner, setBanner] = useState(localStorage.getItem('notificationBanner') || '!!!Pakalnakshathram,\nMy Autobiography.\nClick the link below to buy!!!');
-  const [bannerLink, setBannerLink] = useState(localStorage.getItem('notificationBannerLink') || 'https://www.amazon.in/dp/9392094655');
+  const [bannerLink, setBannerLink] = useState(localStorage.getItem('notificationBannerLink') || 'https://www.amazon.in/dp/9392094655?ref_=cm_sw_r_ffobk_ud_dp_12CYXEDC4NA68DCJRPK9&bestFormat=true&language=en-IN');
   const [editingBanner, setEditingBanner] = useState(false);
   const [error, setError] = useState('');
   const [commentText, setCommentText] = useState({});
