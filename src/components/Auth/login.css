@@ -1,4 +1,4 @@
-.login-wrapper {
+/* .login-wrapper {
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -42,4 +42,112 @@
   color: red;
   text-align: center;
   margin-bottom: 1rem;
+} */
+.signup-container, .login-box, .login-wrapper {
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+.signup-container {
+  background: #ffffff;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+  min-width: 340px;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.signup-form h2 {
+  color: #000000; /* or any color you prefer */
+}
+.signup-form p {
+  color: #7a7979; /* or any color you prefer */
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.signup-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.signup-form label {
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  color: #222;
+}
+
+.signup-form input {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid #ffffff;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #eeeeee;
+  color: #333;
+}
+
+.signup-form input:focus, .signup-form input:active {
+  outline: none;
+  border-color: #ffffff;
+  box-shadow: none;
+}
+
+.password-label {
+  position: relative;
+}
+
+.password-input-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+}
+
+.toggle-visibility {
+  margin-left: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: 1.1rem;
+}
+
+.signup-btn {
+  background: #050505;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 0;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+}
+.signup-btn:hover {
+  background: #2c2c2c;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.or-divider {
+  text-align: center;
+  margin: 1.2rem 0 0.7rem 0;
+  color: #000000;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
 }

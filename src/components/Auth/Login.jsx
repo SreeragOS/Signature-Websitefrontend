@@ -1,24 +1,29 @@
 import { useState } from 'react';
 import api from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
-import './login.css'; // Add this line to import the CSS
+import './login.css';
 
 function Login() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+  const [form, setForm] = useState({
     username: '',
     password: ''
   });
   const [error, setError] = useState('');
 
   const handleChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
+    setError('');
+    if (!form.username || !form.password) {
+      setError('All fields are required.');
+      return;
+    }
     try {
-      const res = await api.post('login/', formData);
+      const res = await api.post('login/', form);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('is_superuser', res.data.is_superuser);
       localStorage.setItem('username', res.data.username);
@@ -29,28 +34,40 @@ function Login() {
   };
 
   return (
-    <div className="login-wrapper">
-      <div className="login-box">
+    <div className="signup-container">
+      <form className="signup-form" onSubmit={handleSubmit}>
         <h2>Log In</h2>
-        {error && <p className="error">{error}</p>}
-        <form onSubmit={handleSubmit}>
+        <p className="subtitle">Enter your credentials to log in</p>
+        {error && <p className="error" style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+        <label>
+          Username
           <input
-            name="username"
             type="text"
-            placeholder="Username"
-            value={formData.username}
+            name="username"
+            placeholder="John Doe"
+            value={form.username}
             onChange={handleChange}
+            required
           />
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <button type="submit">Log In</button>
-        </form>
-      </div>
+        </label>
+        <label className="password-label">
+          Password
+          <div className="password-input-wrapper">
+            <input
+              type="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </label>
+        <button type="submit" className="signup-btn">Log In</button>
+        <div className="login-link">
+          Don't have an account?{' '}
+          <span style={{ color: '#007bff', cursor: 'pointer', textDecoration: 'underline', fontWeight: 500 }} onClick={() => navigate('/signup')}>Sign up</span>
+        </div>
+      </form>
     </div>
   );
 }

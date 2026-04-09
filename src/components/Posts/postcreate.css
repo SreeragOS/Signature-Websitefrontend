@@ -1,3 +1,7 @@
+/* Apply global font stack to all elements in postcreate */
+* {
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif !important;
+}
 /* Custom label for better spacing */
 .custom-label {
   display: block;

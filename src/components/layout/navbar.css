@@ -1,3 +1,7 @@
+/* Ensure navbar uses its own font, not inherited global font */
+.navbar-martha, .navbar-category-link, .logo-text {
+  font-family: 'Acme', sans-serif !important;
+}
 .navbar-user-btn {
   background: #f3e8ff;
   border: 2px solid #c7d2fe;
